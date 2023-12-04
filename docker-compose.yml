@@ -1,0 +1,64 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:8.2.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'teste'
+      MYSQL_PASSWORD: 'teste'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    networks:
+     - tabelafipe
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    networks:
+      - tabelafipe
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+  
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    networks:
+      - tabelafipe
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    networks:
+      - tabelafipe
+    depends_on:
+      - kafka
+    ports:
+      - 9001:9000
+    environment:
+      - KAFKA_BROKERCONNECT=kafka:9092
+
+
+networks:
+  tabelafipe:
+    driver: bridge
+    name: tabelafipe
+
+volumes:
+  grafana-storage: {}
