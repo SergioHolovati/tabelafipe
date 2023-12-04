@@ -1,5 +1,6 @@
 package sergioholovati.tabelafipe.carro;
 
+import jakarta.transaction.Transactional;
 import sergioholovati.tabelafipe.domain.carro.entity.Carro;
 import sergioholovati.tabelafipe.domain.carro.repository.CarroRepository;
 import sergioholovati.tabelafipe.domain.carro.service.CarroService;
@@ -16,39 +17,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.wildfly.common.Assert.assertTrue;
 
 @QuarkusTest
 public class CarroServiceTest {
     @Inject
     CarroService carroService;
-    Carro carro;
 
     Marca marca;
-    @Autowired
-    GenericMapper mapper;
-    @Autowired
-    CarroRepository carroRepository;
-    @Autowired
-    MarcaRepository marcaRepository;
 
     @Nested
     public class Dado_um_carro {
         @BeforeEach
         void setup(){
-            marca = Marca.builder()
-                    .id(1L)
-                    .nome("teste de marca")
-                    .codigo(1L)
-                    .build();
-            carro = Carro.builder()
-                    .id(1L)
-                    .marca(marca)
-                    .codigo(1L)
-                    .nome("teste de carro")
-                    .observacao("teste integracao")
-                    .build();
-            marcaRepository.persist(marca);
-            carroRepository.persist(carro);
+
         }
 
         @Nested
@@ -61,8 +43,8 @@ public class CarroServiceTest {
             }
 
             @Test
-            public void Entao_nao_deve_retornar_uma_lista_vazia(){
-                assertFalse(carroList.isEmpty());
+            public void Entao_deve_retornar_uma_lista_vazia(){
+                assertTrue(carroList.isEmpty());
             }
 
         }

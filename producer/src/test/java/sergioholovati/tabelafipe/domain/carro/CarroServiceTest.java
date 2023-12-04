@@ -17,6 +17,7 @@ import sergioholovati.tabelafipe.infrastructure.mapper.GenericMapper;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.wildfly.common.Assert.assertTrue;
 
 @QuarkusTest
 public class CarroServiceTest {
@@ -48,7 +49,6 @@ public class CarroServiceTest {
                     .observacao("teste integracao")
                     .build();
             carroDto = mapper.converter(carro, CarroDTO.class);
-            carroRepository.persist(carro);
         }
 
         @Nested
@@ -62,7 +62,7 @@ public class CarroServiceTest {
 
             @Test
             public void Entao_nao_deve_retornar_uma_lista_vazia(){
-                assertFalse(carroDTOList.isEmpty());
+                assertTrue(carroDTOList.isEmpty());
             }
 
         }

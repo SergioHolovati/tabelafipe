@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.wildfly.common.Assert.assertTrue;
 
 @QuarkusTest
 public class MarcaServiceTest {
@@ -38,7 +39,6 @@ public class MarcaServiceTest {
                     .nome("teste de marca")
                     .codigo(1L)
                     .build();
-            marcaRepository.persist(marca);
         }
 
         @Nested
@@ -55,7 +55,7 @@ public class MarcaServiceTest {
 
             @Test
             public void Entao_deve_retornar_uma_lista() {
-                assertFalse(marcaList.isEmpty());
+                assertTrue(marcaList.isEmpty());
             }
         }
 

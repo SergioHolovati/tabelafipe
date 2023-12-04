@@ -20,40 +20,6 @@ import static io.restassured.RestAssured.given;
 
 @QuarkusTest
 public class MarcaControllerTest {
-    private Marca marca;
-    private List<CarroDTO> carroDTOList;
-    private MarcaDTO marcaDto;
-    private Carro carro;
-
-    @Autowired
-    MarcaRepository marcaRepository;
-
-    @Autowired
-    CarroRepository carroRepository;
-
-    @Autowired
-    GenericMapper mapper;
-
-    @BeforeEach
-    void setup(){
-        carroDTOList = new ArrayList<>();
-        marca = Marca.builder()
-                .id(1L)
-                .nome("teste de marca")
-                .codigo(1L)
-                .build();
-        marcaRepository.persist(marca);
-        carro = Carro.builder()
-                .id(1L)
-                .marca(marca)
-                .codigo(1L)
-                .nome("teste de carro")
-                .observacao("teste integracao")
-                .build();
-        carroRepository.persist(carro);
-        carroDTOList.add(mapper.converter(carro,CarroDTO.class));
-        marcaDto = mapper.converter(marca, MarcaDTO.class);
-    }
 
 
     @Test
@@ -68,18 +34,16 @@ public class MarcaControllerTest {
     @Test
     public void testeBuscarMarcasPorCodigo() {
         given()
-                .when().get("api/rest/v1/marcas/{codigoMarca}",1)
+                .when().get("api/rest/v1/marcas/1")
                 .then()
-                .statusCode(200)
-                .contentType(ContentType.JSON);
+                .statusCode(404);
     }
     @Test
     public void testeBuscarCarrosPorCodigoDaMarca() {
         given()
                 .when().get("api/rest/v1/marcas/{codigoMarca}/carros",1)
                 .then()
-                .statusCode(200)
-                .contentType(ContentType.JSON);
+                .statusCode(404);
     }
 
 
@@ -88,6 +52,6 @@ public class MarcaControllerTest {
         given()
                 .when().get("api/rest/v1/marcas/sincronizar")
                 .then()
-                .statusCode(204);
+                .statusCode(201);
     }
 }

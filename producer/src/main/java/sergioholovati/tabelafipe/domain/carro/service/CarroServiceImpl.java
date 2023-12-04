@@ -1,6 +1,7 @@
 package sergioholovati.tabelafipe.domain.carro.service;
 
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import sergioholovati.tabelafipe.controller.queryparams.QueryParams;
 import sergioholovati.tabelafipe.controller.request.CarroRequest;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Slf4j
 @ApplicationScoped
+@Transactional
 public class CarroServiceImpl implements CarroService{
 
     private static final String LOG_BUSCANDO_CARROS_POR_MARCA = "Buscando carros da marca {}";

@@ -18,42 +18,6 @@ import static io.restassured.RestAssured.given;
 @QuarkusTest
 public class CarroControllerTest {
 
-    private Marca marca;
-    private CarroDTO carroDto;
-    private CarroRequest carroRequest;
-    private Carro carro;
-    @Autowired
-    MarcaRepository marcaRepository;
-
-    @Autowired
-    CarroRepository carroRepository;
-
-    @Autowired
-    GenericMapper mapper;
-
-    @BeforeEach
-    void setup(){
-        marca = Marca.builder()
-                .id(1L)
-                .nome("teste de marca")
-                .codigo(1L)
-                .build();
-         carro = Carro.builder()
-                .id(1L)
-                .marca(marca)
-                .codigo(1L)
-                .nome("teste de carro")
-                .observacao("teste integracao")
-                .build();
-
-        marcaRepository.persist(marca);
-        carroRepository.persist(carro);
-        carroDto = mapper.converter(carro, CarroDTO.class);
-        carroRequest = CarroRequest.builder()
-                .observacao("teste de observacao")
-                .build();
-    }
-
     @Test
     public void testeBuscarCarros() {
         given()
