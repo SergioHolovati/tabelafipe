@@ -14,7 +14,7 @@ public class CarroRepository  implements PanacheRepository<Carro> {
 
     public List<Carro> buscarPorMarca(Marca marca){
         return list("marca",marca);
-    };
+    }
 
     public void salvar(FipeModeloDTO modelo, Marca marca, Long codigo){
          persist(Carro.builder()

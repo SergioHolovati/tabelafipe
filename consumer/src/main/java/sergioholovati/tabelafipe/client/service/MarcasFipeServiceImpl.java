@@ -1,7 +1,6 @@
 package sergioholovati.tabelafipe.client.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -10,7 +9,6 @@ import sergioholovati.tabelafipe.domain.fipe.FipeModelosDTO;
 @ApplicationScoped
 public class MarcasFipeServiceImpl {
 
-    @Inject
     @RestClient
     MarcasFipeService marcasFipeService;
 

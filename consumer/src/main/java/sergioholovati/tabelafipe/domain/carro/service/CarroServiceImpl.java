@@ -8,10 +8,8 @@ import sergioholovati.tabelafipe.domain.carro.repository.CarroRepository;
 import sergioholovati.tabelafipe.domain.fipe.FipeModeloDTO;
 import sergioholovati.tabelafipe.domain.fipe.FipeModelosDTO;
 import sergioholovati.tabelafipe.domain.marca.entity.Marca;
-import sergioholovati.tabelafipe.infrastructure.mapper.GenericMapper;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Slf4j
@@ -21,12 +19,10 @@ public class CarroServiceImpl implements CarroService{
     private static final String LOG_SINCRONIZANDO_CARRO_DA_MARCA = "sincronizando carro : {} da marca : {} ";
 
     private final CarroRepository carroRepository;
-    private final GenericMapper mapper;
 
     @Inject
-    public CarroServiceImpl(CarroRepository carroRepository, GenericMapper mapper) {
+    public CarroServiceImpl(CarroRepository carroRepository) {
         this.carroRepository = carroRepository;
-        this.mapper = mapper;
     }
 
     @Override
@@ -47,7 +43,7 @@ public class CarroServiceImpl implements CarroService{
         });
     }
 
-    private Boolean carroJaCadastrado(Long codigoCarro){
+    private boolean carroJaCadastrado(Long codigoCarro){
        return carroRepository.carroExiste(codigoCarro);
     }
 }

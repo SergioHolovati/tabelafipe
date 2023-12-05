@@ -42,7 +42,7 @@ class CarroServiceTest {
         carro = Carro.builder().id(1L).codigo(1L).nome("teste").marca(marca).build();
         carroRepository = mock(CarroRepository.class);
         genericMapper = mock(GenericMapper.class);
-        carroService = new CarroServiceImpl(carroRepository,genericMapper);
+        carroService = new CarroServiceImpl(carroRepository);
         when(genericMapper.converter(any(),any())).thenReturn(carro);
         when(carroRepository.buscarPorMarca(any())).thenReturn(List.of(carro));
     }

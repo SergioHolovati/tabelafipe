@@ -60,7 +60,7 @@ public class MarcaServiceImpl implements MarcaService {
         }
     }
 
-    private Boolean marcaJaCadastrada(Long codigo) {
+    private boolean marcaJaCadastrada(Long codigo) {
         return marcaRepository.marcaCadastrada(codigo);
     }
 }

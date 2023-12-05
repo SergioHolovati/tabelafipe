@@ -12,7 +12,7 @@ public class MarcaRepository implements PanacheRepository<Marca> {
 
     public Marca buscarPorCodigo(Long codigo){
         return find("codigo",codigo).stream().findFirst().orElseThrow(NotFoundException::new);
-    };
+    }
 
     public List<Marca> buscarTodos(){
         return findAll().stream().toList();
