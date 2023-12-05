@@ -74,9 +74,7 @@ public class MarcaServiceImpl implements MarcaService{
 
     private Marca buscarMarcaPorCodigo(Long codigo) {
         log.info(LOG_BUSCANDO_MARCA_POR_CODIGO, codigo);
-        Optional<Marca> marcaRepositoryByCodigo = marcaRepository.buscarPorCodigo(codigo);
-        return marcaRepositoryByCodigo
-                .orElseThrow(NotFoundException::new);
+        return  marcaRepository.buscarPorCodigo(codigo);
     }
 
 }

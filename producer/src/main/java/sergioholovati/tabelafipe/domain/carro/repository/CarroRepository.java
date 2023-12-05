@@ -18,14 +18,18 @@ public class CarroRepository implements PanacheRepository<Carro> {
 
     public Carro buscarPorCodigo(Long codigo){
         return find("codigo",codigo).stream().findFirst().orElseThrow(NotFoundException::new);
-    };
+    }
 
    public List<Carro> buscarPorMarca(Marca marca, QueryParams params){
        return find("marca",marca).page(params.getIndex(),params.getSize()).stream().toList();
-    };
+    }
 
    public List<Carro> buscarTodos(QueryParams params){
        return findAll().page(params.getIndex(),params.getSize()).stream().toList();
+   }
+
+   public void salvar(Carro carro){
+        persist(carro);
    }
 
 }

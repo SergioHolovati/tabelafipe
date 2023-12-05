@@ -47,7 +47,7 @@ public class CarroServiceImpl implements CarroService{
 
     @Override
     public List<CarroDTO> buscarCarroPorMarca(Marca marca, QueryParams queryParams) {
-        log.info(LOG_BUSCANDO_CARROS_POR_MARCA, marca.getNome());
+        log.info(LOG_BUSCANDO_CARROS_POR_MARCA, marca);
         List<Carro> carros = carroRepository.buscarPorMarca(marca,queryParams);
         return mapper.converterCollection(carros, CarroDTO.class);
     }
@@ -57,7 +57,7 @@ public class CarroServiceImpl implements CarroService{
                                    CarroRequest carroRequest) {
         Carro carro = carroRepository.buscarPorId(id);
         carro.setObservacao(carroRequest.getObservacao());
-        carroRepository.persist(carro);
+        carroRepository.salvar(carro);
         return mapper.converter(carro, CarroDTO.class);
     }
 }

@@ -1,40 +1,61 @@
 package sergioholovati.tabelafipe.carro;
 
-import jakarta.transaction.Transactional;
-import sergioholovati.tabelafipe.domain.carro.entity.Carro;
-import sergioholovati.tabelafipe.domain.carro.repository.CarroRepository;
-import sergioholovati.tabelafipe.domain.carro.service.CarroService;
-import sergioholovati.tabelafipe.domain.marca.entity.Marca;
-import sergioholovati.tabelafipe.domain.marca.repository.MarcaRepository;
-import sergioholovati.tabelafipe.infrastructure.mapper.GenericMapper;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import sergioholovati.tabelafipe.domain.carro.entity.Carro;
+import sergioholovati.tabelafipe.domain.carro.repository.CarroRepository;
+import sergioholovati.tabelafipe.domain.carro.service.CarroServiceImpl;
+import sergioholovati.tabelafipe.domain.fipe.FipeModeloDTO;
+import sergioholovati.tabelafipe.domain.fipe.FipeModelosDTO;
+import sergioholovati.tabelafipe.domain.marca.entity.Marca;
+import sergioholovati.tabelafipe.infrastructure.mapper.GenericMapper;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.wildfly.common.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @QuarkusTest
-public class CarroServiceTest {
+class CarroServiceTest {
     @Inject
-    CarroService carroService;
+    CarroRepository carroRepository;
+
+    @Inject
+    GenericMapper genericMapper;
+
+    @Inject
+    CarroServiceImpl carroService;
+
+    Carro carro;
 
     Marca marca;
 
+
+    @BeforeEach
+    void setup(){
+
+        marca = Marca.builder().id(1L).nome("teste").codigo(1L).build();
+        carro = Carro.builder().id(1L).codigo(1L).nome("teste").marca(marca).build();
+        carroRepository = mock(CarroRepository.class);
+        genericMapper = mock(GenericMapper.class);
+        carroService = new CarroServiceImpl(carroRepository,genericMapper);
+        when(genericMapper.converter(any(),any())).thenReturn(carro);
+        when(carroRepository.buscarPorMarca(any())).thenReturn(List.of(carro));
+    }
+
     @Nested
-    public class Dado_um_carro {
+    class Dado_um_carro {
         @BeforeEach
         void setup(){
 
         }
 
         @Nested
-        public class Quando_buscar_todos_os_carros{
+        class Quando_buscar_todos_os_carros{
             private List<Carro> carroList;
 
             @BeforeEach
@@ -43,8 +64,27 @@ public class CarroServiceTest {
             }
 
             @Test
-            public void Entao_deve_retornar_uma_lista_vazia(){
-                assertTrue(carroList.isEmpty());
+            void Entao_deve_retornar_uma_lista_vazia(){
+                assertFalse(carroList.isEmpty());
+            }
+
+        }
+
+        @Nested
+        class Quando_sincronizar_marcas{
+
+            @BeforeEach
+            void setup(){
+                FipeModeloDTO fipeModeloDTO = FipeModeloDTO.builder()
+                        .codigo(1)
+                        .nome("teste")
+                        .build();
+                carroService.sincronizarCarrosPorMarca(FipeModelosDTO.builder().modelos(List.of(fipeModeloDTO)).build(),marca);
+            }
+
+            @Test
+            void Entao_deve_retornar_uma_lista_vazia(){
+                verify(carroRepository,times(1)).salvar(any(),any(),any());
             }
 
         }
